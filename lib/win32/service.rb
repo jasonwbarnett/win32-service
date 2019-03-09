@@ -985,7 +985,6 @@ module Win32
       end
 
       handle_scm = OpenSCManager(host, nil, SC_MANAGER_ENUMERATE_SERVICE)
-
       FFI.raise_windows_error('OpenSCManager') if handle_scm == 0
 
       bytes_needed      = FFI::MemoryPointer.new(:ulong)
@@ -1206,6 +1205,36 @@ module Win32
       end
 
       block_given? ? nil : services_array
+    end
+
+    def self.open_service(scm_handle, service_name, desired_access)
+       service_handle = OpenService(
+        scm_handle,
+        service_name,
+        desired_access
+      )
+      FFI.raise_windows_error('OpenService') if service_handle == 0
+
+      if block_given?
+        yield service_handle
+      else
+        service_handle
+      end
+    ensure
+      CloseServiceHandle(service_handle) if block_given?
+    end
+
+    def self.open_sc_manager(host = nil)
+      scm_handle = OpenSCManager(host, nil, SC_MANAGER_ENUMERATE_SERVICE)
+      FFI.raise_windows_error('OpenSCManager') if scm_handle == 0
+
+      if block_given?
+        yield scm_handle
+      else
+        scm_handle
+      end
+    ensure
+      CloseServiceHandle(scm_handle) if block_given?
     end
 
     private
