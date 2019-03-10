@@ -33,6 +33,7 @@ skip_tags: true
 branches:
   only:
     - master
+    - add-helpers
 
 install:
   - systeminfo
