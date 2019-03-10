@@ -27,9 +27,11 @@ module Windows
     attach_pfunc :EnterCriticalSection, [:ptr], :void
     attach_pfunc :FormatMessage, :FormatMessageA, [:ulong, :ptr, :ulong, :ulong, :str, :ulong, :ptr], :ulong
     attach_pfunc :GetCurrentProcess, [], :handle
+    attach_pfunc :GetLastError, [], :dword
     attach_pfunc :InitializeCriticalSection, [:ptr], :void
     attach_pfunc :LeaveCriticalSection, [:ptr], :void
     attach_pfunc :SetEvent, [:handle], :bool
+    attach_pfunc :SetLastError, [:dword], :void
     attach_pfunc :WaitForSingleObject, [:handle, :dword], :dword, :blocking => true
     attach_pfunc :WaitForMultipleObjects, [:dword, :ptr, :int, :dword], :dword
 
