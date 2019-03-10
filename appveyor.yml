@@ -8,8 +8,6 @@ cache:
   - vendor/bundle
 
 configuration:
-  - integration
-  - functional
   - unit
 
 environment:
