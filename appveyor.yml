@@ -59,19 +59,6 @@ for:
   -
     matrix:
       only:
-        - configuration: integration
-    build_script:
-      - bundle exec rake spec:integration
-  -
-    matrix:
-      only:
-        - configuration: functional
-    build_script:
-      - bundle exec rake spec:functional
-  -
-    matrix:
-      only:
         - configuration: unit
     build_script:
       - bundle exec rake spec:unit
-      - bundle exec rake component_specs
