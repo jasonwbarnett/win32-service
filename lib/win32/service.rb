@@ -1207,6 +1207,13 @@ module Win32
       block_given? ? nil : services_array
     end
 
+
+    #
+    # Opens an existing service.
+    #
+    # @param scm_handle []
+    # @param service_name [String] The name of the service
+    #
     def self.open_service(scm_handle, service_name, desired_access)
        service_handle = OpenService(
         scm_handle,
@@ -1224,8 +1231,25 @@ module Win32
       CloseServiceHandle(service_handle) if block_given?
     end
 
-    def self.open_sc_manager(host = nil)
-      scm_handle = OpenSCManager(host, nil, SC_MANAGER_ENUMERATE_SERVICE)
+    #
+    # Establishes a connection to the service control manager on the specified
+    # host and opens the SERVICES_ACTIVE_DATABASE service control manager
+    # database.
+    #
+    # @param host [String] Name of host you want to connect to. If `nil` it
+    #   will connect to the local host.
+    # @param desired_access [Integer] The access to the service control
+    #   manager.
+    # @return [Integer] If the function succeeds, the return value is a handle
+    #   to the specified service control manager database. If the function
+    #   fails, the return value is 0. To get extended error information,
+    #   call ::get_last_error.
+    #
+    #
+    # @see Windows::ServiceConstants
+    #
+    def self.open_sc_manager(host = nil, desired_access = SC_MANAGER_CONNECT)
+      scm_handle = OpenSCManager(host, nil, desired_access)
       FFI.raise_windows_error('OpenSCManager') if scm_handle == 0
 
       if block_given?
